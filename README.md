@@ -1,3 +1,5 @@
+# This package is not finished. use it with your own risk.
+
 # discord-rest-api
 
 Zero dependencies wrapper over discord rest api sdk
