@@ -12,6 +12,7 @@ export type ClientConfiguration = {
     input: RequestInfo | URL,
     init?: RequestInit | undefined
   ) => Promise<Response>;
+  log: (...args: any[]) => void;
 };
 
 export interface IClient {

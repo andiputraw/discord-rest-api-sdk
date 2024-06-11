@@ -14,12 +14,13 @@ const defaultClientConfiguration: Required<ClientConfiguration> = {
     bot_url: "",
     bot_version: "v0.0.1",
   },
+  log(...args) {},
 };
 
 export class Client implements IClient {
   public config: Required<ClientConfiguration>;
   public req: IDiscordHttpRequest;
-  constructor(public token: string, config: ClientConfiguration = {}) {
+  constructor(public token: string, config?: ClientConfiguration) {
     this.config = {
       ...defaultClientConfiguration,
       ...config,

@@ -3,7 +3,7 @@ import type { DiscordErrorResponse } from "../types";
 export interface IDiscordHttpRequest {
   fetch<T = unknown>(
     path: string,
-    method: "POST" | "GET" | "DELETE" | "PATCH",
+    method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
     body: unknown
   ): Promise<Result<T, DiscordErrorResponse>>;
 }

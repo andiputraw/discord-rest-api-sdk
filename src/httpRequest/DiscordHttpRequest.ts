@@ -11,7 +11,7 @@ export class DiscordHttpRequest {
 
   async fetch<T = unknown>(
     path: string,
-    method: "POST" | "GET" | "DELETE" | "PATCH",
+    method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
     body: unknown
   ): Promise<Result<T, DiscordErrorResponse>> {
     const url = "https://discord.com/api/v10/" + path;
@@ -30,9 +30,12 @@ export class DiscordHttpRequest {
       const text = await res.text();
       const success = text === "" && res.status === 204;
       if (success) return Ok(null as T);
-      if (res.status >= 200 && res.status < 300)
+      if (res.status >= 200 && res.status < 300) {
+        this.config.log(`[${res.status}] ${text}`);
         return Ok(JSON.parse(text) as T);
+      }
       if (res.status !== 429 || res.status >= 400) {
+        this.config.log(`[${res.status}] ${text}`);
         return Err(JSON.parse(text) as DiscordErrorResponse);
       }
       await delay(
@@ -40,6 +43,7 @@ export class DiscordHttpRequest {
       );
       retries++;
     } while (retries <= 30);
+    this.config.log("Retry amount is reached.");
     return Err({
       message: "Retry amount is reached.",
       code: -1,

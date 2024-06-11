@@ -1,4 +1,5 @@
 import type { APIMessage } from "discord-api-types/v10";
+import { Routes } from "discord-api-types/v10";
 import type { IClient } from "../interfaces";
 import type { APIResult } from "../types";
 import type {
@@ -49,5 +50,17 @@ export class Message {
         body
       )
     ).map((message) => new Message(this.client, message));
+  }
+
+  async addReaction(emoji: string) {
+    return await this.client.req.fetch<null>(
+      Routes.channelMessageOwnReaction(
+        this.data.channel_id,
+        this.data.id,
+        emoji
+      ),
+      "PUT",
+      {}
+    );
   }
 }

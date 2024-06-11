@@ -1,6 +1,7 @@
 import { expect, describe, test } from "bun:test";
 import { Client } from "../src/client";
 import { delay } from "../src/util";
+import type { APIResult, Message } from "../mod";
 
 const TOKEN = process.env.TOKEN;
 const CHANNEL = process.env.CHANNEL;
@@ -10,12 +11,15 @@ if (!TOKEN || !CHANNEL) {
 }
 
 describe("test channel functionanilty", async () => {
-  const client = new Client(TOKEN);
+  const client = new Client(TOKEN, { log: (v) => console.log(v) });
 
-  const testMessage = await client
-    .channel(CHANNEL)
-    .send({ content: "This is a test" });
+  let testMessage: APIResult<Message>;
+  let replyMessage: APIResult<Message>;
+
   test("send message", async () => {
+    testMessage = await client
+      .channel(CHANNEL)
+      .send({ content: "This is a test" });
     expect(testMessage.isOk()).toBeTruthy();
     await delay(1);
   });
@@ -29,10 +33,16 @@ describe("test channel functionanilty", async () => {
   });
 
   test("reply message", async () => {
-    const reply = await testMessage
+    replyMessage = await testMessage
       .unwrap()
       .reply({ content: "This is a reply" });
-    expect(reply.isOk()).toBeTruthy();
+    expect(replyMessage.isOk()).toBeTruthy();
+    await delay(1);
+  });
+
+  test("add reaction", async () => {
+    const reaction = await replyMessage.unwrap().addReaction(encodeURI("👍"));
+    expect(reaction.isOk()).toBeTruthy();
     await delay(1);
   });
 
