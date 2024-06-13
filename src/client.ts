@@ -16,7 +16,18 @@ const defaultClientConfiguration: Required<ClientConfiguration> = {
   },
   log(...args) {},
 };
-
+/**
+ * Creates a new Client instance.
+ *
+ * ```ts
+ * const client = new Client("TOKEN")
+ * const channel = client.channel("123456789012345678")
+ * const message = await channel.sendMessage({ content: "Hello, World!" })
+ * ```
+ *
+ * @param {string} token - The token of the bot.
+ * @param {ClientConfiguration} [config] - Optional configuration for the client.
+ */
 export class Client implements IClient {
   public config: Required<ClientConfiguration>;
   public req: IDiscordHttpRequest;
