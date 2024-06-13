@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "jsr:check": "bunx jsr publish --dry-run",
+    "cloc": "cloc --exclude-dir=node_modules . ",
     "prepare": "husky"
   },
   "devDependencies": {
