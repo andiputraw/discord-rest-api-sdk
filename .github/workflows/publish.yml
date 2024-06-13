@@ -17,6 +17,6 @@ jobs:
       - uses: oven-sh/setup-bun@v1
 
       - name: install package
-        run: bun install
+        run: bun install --frozen-lockfile
       - name: Publish package
         run: bunx jsr publish
