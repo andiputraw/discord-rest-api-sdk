@@ -10,10 +10,24 @@ const CHANNEL = process.env.CHANNEL;
 if (!TOKEN || !CHANNEL) {
   throw new Error("token or channel is not set");
 }
+const logger = (...args: any[]) => {
+  args.forEach((arg) => {
+    if (typeof arg === "object") {
+      console.log(JSON.stringify(arg, null, 2));
+    } else {
+      try {
+        const parsedArg = JSON.parse(arg);
+        console.log(JSON.stringify(parsedArg, null, 2));
+      } catch (error) {
+        console.log(arg);
+      }
+    }
+  });
+};
 
-describe("test channel functionanilty", async () => {
-  const client = new Client(TOKEN, { log: (v) => console.log(v) });
+const client = new Client(TOKEN, { log: logger });
 
+describe("test sending message and reaction", async () => {
   let testMessage: APIResult<Message>;
   let replyMessage: APIResult<Message>;
   let user: APIUser;
@@ -21,7 +35,7 @@ describe("test channel functionanilty", async () => {
   test("send message", async () => {
     testMessage = await client
       .channel(CHANNEL)
-      .send({ content: "This is a test" });
+      .sendMessage({ content: "This is a test" });
     expect(testMessage.isOk()).toBeTruthy();
     await delay(1);
   });
@@ -95,6 +109,35 @@ describe("test channel functionanilty", async () => {
 
   test("delete message", async () => {
     const response = await testMessage.unwrap().delete();
+    expect(response.isOk()).toBeTruthy();
+    await delay(1);
+  });
+});
+
+describe("test pin message", async () => {
+  let pinnedMessage: Message;
+  test("create pin message", async () => {
+    const message = await (
+      await client.channel(CHANNEL).sendMessage({
+        content: "This is a pin message",
+      })
+    )
+      .unwrap()
+      .pin();
+
+    expect(message.isOk()).toBeTruthy();
+    await delay(1);
+  });
+
+  test("get pinned message", async () => {
+    let messages = await client.channel(CHANNEL).getPinnedMessage();
+    expect(messages.isOk()).toBeTruthy();
+    pinnedMessage = messages.unwrap()[0];
+    await delay(1);
+  });
+
+  test("unpin message", async () => {
+    const response = await pinnedMessage.unpin();
     expect(response.isOk()).toBeTruthy();
     await delay(1);
   });

@@ -12,7 +12,7 @@ export class DiscordHttpRequest {
   async fetch<T = unknown>(
     path: string,
     method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
-    body: unknown
+    body?: unknown
   ): Promise<Result<T, DiscordErrorResponse>> {
     const url = "https://discord.com/api/v10/" + path;
     const headers = {
@@ -21,7 +21,7 @@ export class DiscordHttpRequest {
       "User-Agent": `${this.config.bot_metadata.bot_name} (${this.config.bot_metadata.bot_url}, ${this.config.bot_metadata.bot_version})`,
     };
 
-    this.config.log(`[REQUEST] ${method} ${url}`);
+    this.config.log(`[REQUEST] ${method} ${url}`, body);
     let retries = 0;
     do {
       const res = await this.config.httpClient(url, {
@@ -33,11 +33,11 @@ export class DiscordHttpRequest {
       const success = text === "" && res.status === 204;
       if (success) return Ok(null as T);
       if (res.status >= 200 && res.status < 300) {
-        this.config.log(`[${res.status}] ${text}`);
+        this.config.log(`${res.status}]`, text);
         return Ok(JSON.parse(text) as T);
       }
-      if (res.status !== 429 || res.status >= 400) {
-        this.config.log(`[${res.status}] ${text}`);
+      if (res.status !== 429 && res.status >= 400) {
+        this.config.log(`${res.status}]`, text);
         return Err(JSON.parse(text) as DiscordErrorResponse);
       }
       await delay(

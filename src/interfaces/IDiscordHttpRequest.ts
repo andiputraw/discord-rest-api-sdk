@@ -4,6 +4,6 @@ export interface IDiscordHttpRequest {
   fetch<T = unknown>(
     path: string,
     method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
-    body: unknown
+    body?: unknown
   ): Promise<Result<T, DiscordErrorResponse>>;
 }

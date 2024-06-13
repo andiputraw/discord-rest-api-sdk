@@ -27,6 +27,18 @@ export class Client implements IClient {
     };
     this.req = new DiscordHttpRequest(this.token, this.config);
   }
+
+  /**
+   * Creates a new Channel instance with the provided ID.
+   *
+   * ```ts
+   * const client = new Client("TOKEN")
+   * const channel = client.channel("123456789012345678")
+   * ```
+   *
+   * @param {string} id - The ID of the channel.
+   * @return {Channel} A new Channel instance.
+   */
   channel(id: string): Channel {
     return new Channel(this, id);
   }
