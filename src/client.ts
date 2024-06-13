@@ -1,4 +1,3 @@
-import { isCallChain } from "typescript";
 import { Channel } from "./channel/Channel";
 import { DiscordHttpRequest } from "./httpRequest/DiscordHttpRequest";
 import type {
