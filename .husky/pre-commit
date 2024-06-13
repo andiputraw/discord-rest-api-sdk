@@ -1,1 +1,1 @@
-bun add --dev husky
+bun run publish:check

@@ -20,6 +20,8 @@ export class DiscordHttpRequest {
       "Content-Type": "application/json; charset=UTF-8",
       "User-Agent": `${this.config.bot_metadata.bot_name} (${this.config.bot_metadata.bot_url}, ${this.config.bot_metadata.bot_version})`,
     };
+
+    this.config.log(`[REQUEST] ${method} ${url}`);
     let retries = 0;
     do {
       const res = await this.config.httpClient(url, {
