@@ -1,5 +1,8 @@
 {
   "name": "@andiputraw/discord-rest-api-sdk",
   "version": "0.0.2",
-  "exports": "./mod.ts"
+  "exports": "./mod.ts",
+  "publish": {
+    "exclude": ["tests"]
+  }
 }
