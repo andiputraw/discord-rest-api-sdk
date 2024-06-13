@@ -2,6 +2,9 @@
   "name": "discord-rest-api",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "publish:check": "bunx jsr publish --dry-run"
+  },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
     "@types/bun": "latest",

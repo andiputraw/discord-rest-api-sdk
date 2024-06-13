@@ -52,7 +52,7 @@ export class Message {
     ).map((message) => new Message(this.client, message));
   }
 
-  async addReaction(emoji: string) {
+  async addReaction(emoji: string): Promise<APIResult<null>> {
     return await this.client.req.fetch<null>(
       Routes.channelMessageOwnReaction(
         this.data.channel_id,
