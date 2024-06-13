@@ -1,3 +1,5 @@
+[![JSR](https://jsr.io/badges/@andiputraw/discord-rest-api-sdk)](https://jsr.io/@andiputraw/discord-rest-api-sdk)
+
 # This package is not finished. use it with your own risk.
 
 # discord-rest-api
