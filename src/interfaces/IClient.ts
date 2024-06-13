@@ -23,11 +23,17 @@ export type ClientConfiguration = {
   /**
    * A function that logs messages to the console.
    */
-  log: (...args: any[]) => void;
+  log?: (...args: any[]) => void;
+};
+
+export type RequiredClientConfiguration = Required<
+  Omit<ClientConfiguration, "log">
+> & {
+  log?: ClientConfiguration["log"];
 };
 
 export interface IClient {
   token: string;
-  config: Required<ClientConfiguration>;
+  config: RequiredClientConfiguration;
   req: IDiscordHttpRequest;
 }

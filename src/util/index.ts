@@ -7,3 +7,8 @@ export function delay(seconds: number): Promise<void> {
 export function objectToQueryString(obj: object | undefined): string {
   return new URLSearchParams(obj as any).toString();
 }
+
+export type RequireAtLeastOne<T> = {
+  [K in keyof T]-?: Required<Pick<T, K>> &
+    Partial<Pick<T, Exclude<keyof T, K>>>;
+}[keyof T];

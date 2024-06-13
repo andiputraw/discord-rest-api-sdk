@@ -1,8 +1,9 @@
 import { expect, describe, test } from "bun:test";
-import { Client } from "../src/client";
-import { delay } from "../src/util";
-import type { APIResult, Message } from "../mod";
+import { Client } from "../../src/client";
+import { delay } from "../../src/util";
+import type { APIResult, Message } from "../../mod";
 import type { APIUser } from "discord-api-types/v10";
+import { logger } from "../logger";
 
 const TOKEN = process.env.TOKEN;
 const CHANNEL = process.env.CHANNEL;
@@ -10,22 +11,8 @@ const CHANNEL = process.env.CHANNEL;
 if (!TOKEN || !CHANNEL) {
   throw new Error("token or channel is not set");
 }
-const logger = (...args: any[]) => {
-  args.forEach((arg) => {
-    if (typeof arg === "object") {
-      console.log(JSON.stringify(arg, null, 2));
-    } else {
-      try {
-        const parsedArg = JSON.parse(arg);
-        console.log(JSON.stringify(parsedArg, null, 2));
-      } catch (error) {
-        console.log(arg);
-      }
-    }
-  });
-};
 
-const client = new Client(TOKEN, { log: logger });
+const client = new Client(TOKEN, { log: logger("test channel") });
 
 describe("test sending message and reaction", async () => {
   let testMessage: APIResult<Message>;
